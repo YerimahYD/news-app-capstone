@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Pending Articles{% endblock %}
+{% block content %}
+<h1 class="page-title">Pending Articles</h1>
+{% if articles %}
+<table class="data-table">
+  <thead><tr><th>Title</th><th>Author</th><th>Publisher</th><th>Submitted</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for article in articles %}
+    <tr>
+      <td><a href="{% url 'news:article_detail' article.pk %}">{{ article.title }}</a></td>
+      <td>{{ article.author.username }}</td>
+      <td>{{ article.publisher.name|default:"Independent" }}</td>
+      <td>{{ article.created_at|date:"d M Y" }}</td>
+      <td>
+        <a href="{% url 'news:article_approve' article.pk %}" class="btn btn-sm btn-primary">Approve</a>
+        <a href="{% url 'news:article_delete' article.pk %}" class="btn btn-sm btn-danger">Reject</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state"><p>No articles awaiting approval.</p></div>
+{% endif %}
+{% endblock %}

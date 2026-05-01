@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}{{ newsletter.title }}{% endblock %}
+{% block content %}
+<div class="article-detail">
+  <h1>{{ newsletter.title }}</h1>
+  <p class="meta">By {{ newsletter.author.username }} · {{ newsletter.created_at|date:"d M Y" }}</p>
+  <p style="margin:1rem 0">{{ newsletter.description }}</p>
+  <h2 style="margin-bottom:1rem">Articles in this newsletter</h2>
+  {% if articles %}
+  <div class="card-grid">
+    {% for article in articles %}
+    <div class="article-card">
+      <h3><a href="{% url 'news:article_detail' article.pk %}">{{ article.title }}</a></h3>
+      <p class="meta">By {{ article.author.username }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="color:var(--muted);font-family:sans-serif">No approved articles in this newsletter yet.</p>
+  {% endif %}
+  <a href="{% url 'news:newsletter_list' %}" class="btn btn-outline" style="margin-top:1.5rem;display:inline-block">← Back</a>
+</div>
+{% endblock %}

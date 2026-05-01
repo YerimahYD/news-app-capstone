@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Articles{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Articles</h1>
+  {% if user.is_journalist %}<a href="{% url 'news:article_create' %}" class="btn btn-primary">+ New Article</a>{% endif %}
+</div>
+{% if articles %}
+<div class="card-grid">
+  {% for article in articles %}
+  <div class="article-card">
+    <h3><a href="{% url 'news:article_detail' article.pk %}">{{ article.title }}</a></h3>
+    <p class="meta">By {{ article.author.username }}{% if article.publisher %} · {{ article.publisher.name }}{% endif %} · {{ article.created_at|date:"d M Y" }}</p>
+    <p class="preview">{{ article.content|truncatechars:120 }}</p>
+    {% if user.is_editor or article.author == user %}
+    <div class="card-actions">
+      <a href="{% url 'news:article_edit' article.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+      <a href="{% url 'news:article_delete' article.pk %}" class="btn btn-sm btn-danger">Delete</a>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><p>No approved articles yet.</p></div>
+{% endif %}
+{% endblock %}

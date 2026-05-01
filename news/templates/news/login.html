@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Login — NewsApp{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h1>Sign In</h1>
+  {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group"><label>Username</label>
+      <input type="text" name="username" class="form-control" required autofocus></div>
+    <div class="form-group"><label>Password</label>
+      <input type="password" name="password" class="form-control" required></div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+  <p style="margin-top:1rem">
+    No account? <a href="{% url 'news:register' %}">Register as a user</a>
+    &nbsp;·&nbsp;
+    <a href="{% url 'news:register_publisher' %}">Register a publication</a>
+  </p>
+</div>
+{% endblock %}

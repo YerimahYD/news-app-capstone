@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Publishers{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Publishers</h1>
+  <a href="{% url 'news:register_publisher' %}" class="btn btn-secondary">+ Register Publication</a>
+</div>
+{% if publishers %}
+<div class="card-grid">
+  {% for publisher in publishers %}
+  <div class="article-card">
+    <h3>{{ publisher.name }}</h3>
+    <p class="meta">{{ publisher.description|truncatechars:100 }}</p>
+    {% if user.is_reader %}
+      {% if publisher.pk in subscribed_ids %}
+      <form method="post" action="{% url 'news:unsubscribe_publisher' publisher.pk %}" style="margin-top:.75rem">
+        {% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">✓ Unsubscribe</button>
+      </form>
+      {% else %}
+      <form method="post" action="{% url 'news:subscribe_publisher' publisher.pk %}" style="margin-top:.75rem">
+        {% csrf_token %}<button type="submit" class="btn btn-primary btn-sm">+ Subscribe</button>
+      </form>
+      {% endif %}
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><p>No publishers registered yet. <a href="{% url 'news:register_publisher' %}">Register one</a>.</p></div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Journalists{% endblock %}
+{% block content %}
+<div class="page-header"><h1>Journalists</h1></div>
+{% if journalists %}
+<div class="card-grid">
+  {% for journalist in journalists %}
+  <div class="article-card">
+    <h3>{{ journalist.username }}</h3>
+    <p class="meta">{{ journalist.articles.count }} article{{ journalist.articles.count|pluralize }}{% if journalist.publisher %} · {{ journalist.publisher.name }}{% endif %}</p>
+    {% if user.is_reader %}
+      {% if journalist.pk in subscribed_ids %}
+      <form method="post" action="{% url 'news:unsubscribe_journalist' journalist.pk %}" style="margin-top:.75rem">
+        {% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">✓ Unsubscribe</button>
+      </form>
+      {% else %}
+      <form method="post" action="{% url 'news:subscribe_journalist' journalist.pk %}" style="margin-top:.75rem">
+        {% csrf_token %}<button type="submit" class="btn btn-primary btn-sm">+ Subscribe</button>
+      </form>
+      {% endif %}
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><p>No journalists registered yet.</p></div>
+{% endif %}
+{% endblock %}

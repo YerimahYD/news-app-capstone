@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Home — NewsApp{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Welcome, {{ user.username }}</h1>
+  <span class="role-badge role-{{ user.role }}">{{ user.role }}</span>
+</div>
+<h2 class="section-title">Latest Articles</h2>
+{% if articles %}
+<div class="card-grid">
+  {% for article in articles|slice:":6" %}
+  <div class="article-card">
+    <h3><a href="{% url 'news:article_detail' article.pk %}">{{ article.title }}</a></h3>
+    <p class="meta">By {{ article.author.username }}{% if article.publisher %} · {{ article.publisher.name }}{% endif %}</p>
+    <p class="preview">{{ article.content|truncatechars:120 }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><p>No published articles yet.</p></div>
+{% endif %}
+{% endblock %}

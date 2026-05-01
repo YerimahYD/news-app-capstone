@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}NewsApp{% endblock %}</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'news/css/style.css' %}">
+</head>
+<body>
+{% if user.is_authenticated %}
+<header>
+  <div class="header-inner">
+    <a class="brand" href="{% url 'news:home' %}">📰 NewsApp</a>
+    <nav class="nav-links">
+      <a href="{% url 'news:article_list' %}">Articles</a>
+      <a href="{% url 'news:newsletter_list' %}">Newsletters</a>
+      <a href="{% url 'news:publisher_list' %}">Publishers</a>
+      <a href="{% url 'news:journalist_list' %}">Journalists</a>
+      {% if user.is_journalist or user.is_editor %}
+        <a href="{% url 'news:article_create' %}">+ Article</a>
+        <a href="{% url 'news:newsletter_create' %}">+ Newsletter</a>
+      {% endif %}
+      {% if user.is_editor %}
+        <a href="{% url 'news:pending_articles' %}" class="badge-link">Pending</a>
+      {% endif %}
+      <span class="user-info">{{ user.username }} ({{ user.role }})</span>
+      <a href="{% url 'news:logout' %}">Logout</a>
+    </nav>
+  </div>
+</header>
+{% endif %}
+
+<main class="container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <p>NewsApp — Django Capstone Project</p>
+</footer>
+</body>
+</html>

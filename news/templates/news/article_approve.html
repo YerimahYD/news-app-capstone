@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Approve Article{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h1>Approve Article</h1>
+  <p>Approve <strong>"{{ article.title }}"</strong> by {{ article.author.username }}?</p>
+  <p style="color:var(--muted);margin-top:.5rem">This will notify all subscribers by email and log the approval.</p>
+  <form method="post" style="display:flex;gap:.75rem;margin-top:1.5rem">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Approve & Publish</button>
+    <a href="{% url 'news:pending_articles' %}" class="btn btn-outline">Cancel</a>
+  </form>
+</div>
+{% endblock %}

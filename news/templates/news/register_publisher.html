@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Register Publication — NewsApp{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h1>Register a Publication</h1>
+  <p style="color:var(--muted);font-size:.875rem;margin-bottom:1.25rem;font-family:sans-serif">
+    Register your publication here. Once registered, journalists and editors
+    can select your publication when they create their accounts.
+  </p>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% for error in field.errors %}
+        <span class="field-error">{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Register Publication</button>
+      <a href="{% url 'news:login' %}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Register — NewsApp{% endblock %}
+{% block content %}
+<div class="form-card">
+  <h1>Create Account</h1>
+  <p style="color:var(--muted);font-size:.875rem;margin-bottom:1rem;font-family:sans-serif">
+    Are you a publication? <a href="{% url 'news:register_publisher' %}">Register your publication here</a> first,
+    then come back to create your journalist or editor account.
+  </p>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% if field.help_text %}
+        <small style="color:var(--muted);font-family:sans-serif">{{ field.help_text }}</small>
+      {% endif %}
+      {% for error in field.errors %}
+        <span class="field-error">{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+  <p style="margin-top:1rem">Already registered? <a href="{% url 'news:login' %}">Login</a></p>
+</div>
+{% endblock %}
