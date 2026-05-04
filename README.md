@@ -106,3 +106,33 @@ Visit http://127.0.0.1:8000 in your browser.
 | POST   | /api/approved/                | Authenticated (internal)  |
 | GET    | /api/newsletters/             | Authenticated             |
 | POST   | /api/newsletters/             | Journalists only          |
+
+## Running with Docker
+
+### Step 1 — Make sure Docker Desktop is running
+Open Docker Desktop and wait for it to fully start.
+
+### Step 2 — Build the Docker image
+```bash
+docker build -t news-app .
+```
+
+### Step 3 — Run the container
+```bash
+docker run -d -p 8000:8000 news-app
+```
+
+### Step 4 — Visit the app
+Open your browser and go to **http://localhost:8000**
+
+### Step 5 — Stop the container
+```bash
+docker ps                    # get container ID
+docker stop [container_id]   # stop the container
+```
+
+### Step 6 — Using Docker Compose
+```bash
+docker-compose up    # start
+docker-compose down  # stop
+```
